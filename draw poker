@@ -1,0 +1,82 @@
+import random
+dscard=[]
+hand=[]
+deck={}  #the deck of cards
+deck[0]=['Ace of Diamonds','Two of Diamonds','Three of Diamonds',"Four of Diamonds",'Five of Diamonds','Six of Diamonds',"Seven of Diamonds","Eight of Diamonds","Nine of Diamonds","Ten of Diamonds","Jack of Diamonds","Queen of Diamonds","King of Diamonds"]
+deck[1]=["Ace of Clubs","Two of Clubs","Three of Clubs","Four of Clubs","Five of Clubs","Six of Clubs","Seven of Clubs","Eight of Clubs","Nine of Clubs","Ten of Clubs","Jack of Clubs","Queen of Clubs","King of Clubs"]
+deck[2]=["Ace of Hearts","Two of Hearts","Three of Hearts","Four of Hearts","Five of Hearts","Six of Hearts","Seven of Hearts","Eight of Hearts","Nine of Hearts","Ten of Hearts","Jack of Hearts","Queen of Hearts","King of Hearts"]
+deck[3]=["Ace of Spades","Two of Spades","Three of Spades","Four of Spades","Five of Spades","Six of Spades","Seven of Spades","Eight of Spades","Nine of Spades","Ten of Spades","Jack of Spades","Queen of Spades","King of Spades"]
+count=0
+def draw():  #main drawing system
+  x=random.randint(0,3)
+  card=random.choice(deck[x])
+  deck[x].remove(card)
+  hand.append(card)
+  return card
+rules ='''
+Here are the rules
+You are playing a version of Poker called Draw Poler
+Where your goal is to draw the highest hand possible
+the game is simple, through pure rng, you will be given 5 cards
+all with suits,(Diamonds,Hearts,Clubs,Spades)
+Then you decide the value using card rank and hand rank
+Then you can decide to discard any card from 0-5
+(Discarding all five will cause a random card from the deck to disappear)
+After that, you will draw back to five and the game ends
+Play with others to see who can get lucky to draw the best hand
+*Card Rank* from lowest to highest
+2-3-4-5-6-7-8-9-10-J-Q-K-A
+*Hand Rank* Hierarchy
+1. Royal Flush (10S,JS,QS,KS,AS)(These specific cards in the same suit)
+2. Straight Flush (4D,5D,6D,7D,8D)(Any five cards (in this case Ace is 1) in ascending order of same suit)
+3. Four of a Kind (8,8,8,8,5)(Four cards with the same value)
+4. Full House (3,3,3,K,K)(A three of a kind and a pair)
+5. Flush (5H,2H,9H,KH,AH)(Any five cards in the same suit)
+6. Straight (7,8,9,10,J)(Any five cards in ascending order)(A is 1)
+7. Three of a kind (10,10,10,3,K)(Three cards with the same value)
+8. Two pair (J,J,3,3,7)(Two pairs)
+9. Pair (A,A,8,2,7)(Any two cards with the same value)
+10. High Card (A,8,5,3,2)(Highest Card)
+''' #rules
+start=input("Press Enter to Start\nOr ? for the game rules ")  #menu
+if start == "?":
+  print(rules)
+print("You drew...\n")
+for i in range(5):   #start of the game
+  print(draw())
+opt=input('want to discard?[Y/N] ')
+while opt.upper() !='N' and opt.upper() !='Y':
+  print('Sorry')
+  opt=input('Please input Y or N ')
+if opt.upper() == 'Y':
+  dig=int(input('Discard how many cards: '))  #discard
+  while not dig<6:
+    dig=int(input('Please input a number from 1-5: '))
+  if dig == 5:
+    hand.clear()
+    x=random.randint(0,3)
+    card=random.choice(deck[x])
+    deck[x].remove(card)
+    for i in range(5):
+      draw()
+    print("Your final hand...\n")
+    for i in range(5):
+      print(hand[i])
+  else:
+    print('Which card?\n1. '+str(hand[0])+'\n2. '+str(hand[1])+'\n3. '+str(hand[2])+'\n4. '+str(hand[3])+'\n5. '+str(hand[4]))
+    for i in range(dig):
+      choice=int(input("Discarded Card: "))
+      while not choice<6:
+        choice=int(input('Please stop and follow the instruction\nINPUT A NUMBER BETWEEN 1-5'))
+      dscard.append(hand[choice-1])
+    for i in range(dig):
+      hand.remove(dscard[dig-1-i])
+    for i in range(dig):
+      draw()
+    print("Your final hand...\n")
+    for i in range(5):
+      print(hand[i])
+else:
+  print('Your final hand...\n ')
+  for i in range(5):
+    print(hand[i])
